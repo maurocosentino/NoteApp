@@ -25,13 +25,15 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.firebase:firebase-firestore")
     implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.hilt.android)
     implementation(libs.androidx.contentpager)
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.generativeai)
+    implementation(libs.androidx.appcompat)
+//    implementation(libs.firebase.firestore.ktx)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
