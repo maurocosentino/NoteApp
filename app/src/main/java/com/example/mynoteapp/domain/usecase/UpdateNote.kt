@@ -7,13 +7,17 @@ import jakarta.inject.Inject
 import java.lang.System
 
 
-class UpdateNote @Inject constructor(private val noteRepository: INoteRepository) {
-    suspend operator fun invoke(note: Note, update : Long) : AppResult<Unit> {
+class UpdateNote @Inject constructor(
+    private val noteRepository: INoteRepository
+) {
+    suspend operator fun invoke(note: Note): AppResult<Unit> {
 
-        if (note.title.isBlank() || note.description.isBlank() ) {
-            return AppResult.Error("Note title and content be empty")
+        if (note.title.isBlank() || note.description.isBlank()) {
+            return AppResult.Error("Note title and content can't be empty")
         }
 
-        return noteRepository.updateNote(note.copy(updatedAt = System.currentTimeMillis()))
+        return noteRepository.updateNote(
+            note.copy(updatedAt = System.currentTimeMillis())
+        )
     }
 }

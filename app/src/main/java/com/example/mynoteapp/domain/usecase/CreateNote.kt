@@ -7,13 +7,13 @@ import jakarta.inject.Inject
 
 class CreateNote @Inject constructor(private val noteRepository: INoteRepository)
 {
-    suspend operator fun invoke(note: Note) : AppResult<Unit>
+    suspend operator fun invoke(title: String, description: String) : AppResult<Unit>
     {
-        if (note.title.isBlank() || note.description.isBlank() ) {
+        if (title.isBlank() || description.isBlank() ) {
             return AppResult.Error("Note title and content be empty")
         }
 
-       return noteRepository.createNote(note)
-
+        val note = Note(title = title, description = description)
+        return noteRepository.createNote(note)
     }
 }
