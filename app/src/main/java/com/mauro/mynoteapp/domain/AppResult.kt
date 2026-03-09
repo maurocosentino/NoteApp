@@ -1,0 +1,6 @@
+package com.mauro.mynoteapp.domain
+
+sealed class AppResult<out T> {
+    data class Success<out T>(val data: T) : AppResult<T>()
+    data class Error(val message: String) : AppResult<Nothing>()
+}
