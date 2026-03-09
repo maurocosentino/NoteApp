@@ -57,10 +57,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+    implementation("androidx.compose.foundation:foundation:1.6.8")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.navigation.compose)
+    implementation("androidx.navigation:navigation-compose:2.8.0")
 
     ksp(libs.hilt.compiler)
 

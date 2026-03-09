@@ -16,7 +16,11 @@ import com.mauro.mynoteapp.notes.NoteDetailScreen
 import com.mauro.mynoteapp.notes.NotesScreen
 import com.mauro.mynoteapp.theme.MyNoteAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+import androidx.navigation.compose.composable
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -47,7 +51,11 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "notes"
+        startDestination = "notes",
+        enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+        exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+        popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+        popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
     ) {
 
         composable("notes") { backStackEntry ->

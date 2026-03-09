@@ -25,11 +25,13 @@ class NotesViewModelTest {
     private lateinit var getAllNotes: GetAllNotes
     private lateinit var createNote: CreateNote
     private lateinit var viewModel: NotesViewModel
+    private lateinit var deleteNote: DeleteNote
 
     @Before
     fun setup() {
         getAllNotes = mock()
         createNote = mock()
+        deleteNote = mock()
     }
 
     @Test
@@ -37,7 +39,7 @@ class NotesViewModelTest {
         val notes = listOf(Note(title = "Título", description = "Desc"))
         whenever(getAllNotes()).thenReturn(flowOf(AppResult.Success(notes)))
 
-        viewModel = NotesViewModel(getAllNotes, createNote)
+        viewModel = NotesViewModel(getAllNotes, createNote, deleteNote)
         advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value is NotesUiState.Success)
@@ -48,7 +50,7 @@ class NotesViewModelTest {
     fun `when notes list is empty, uiState is Empty`() = runTest {
         whenever(getAllNotes()).thenReturn(flowOf(AppResult.Success(emptyList())))
 
-        viewModel = NotesViewModel(getAllNotes, createNote)
+        viewModel = NotesViewModel(getAllNotes, createNote, deleteNote)
         advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value is NotesUiState.Empty)
@@ -58,7 +60,7 @@ class NotesViewModelTest {
     fun `when repository returns error, uiState is Error`() = runTest {
         whenever(getAllNotes()).thenReturn(flowOf(AppResult.Error("Error de red")))
 
-        viewModel = NotesViewModel(getAllNotes, createNote)
+        viewModel = NotesViewModel(getAllNotes, createNote, deleteNote)
         advanceUntilIdle()
 
         assertTrue(viewModel.uiState.value is NotesUiState.Error)
