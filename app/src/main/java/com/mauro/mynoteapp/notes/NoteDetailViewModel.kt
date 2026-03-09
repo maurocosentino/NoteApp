@@ -7,14 +7,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mauro.mynoteapp.domain.AppResult
 import com.mauro.mynoteapp.domain.model.Note
-import com.mauro.mynoteapp.domain.repository.INoteRepository
+import com.mauro.mynoteapp.domain.usecase.CreateNote
+import com.mauro.mynoteapp.domain.usecase.DeleteNote
+import com.mauro.mynoteapp.domain.usecase.GetNoteById
+import com.mauro.mynoteapp.domain.usecase.UpdateNote
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    private val repository: INoteRepository
+    private val getNoteById: GetNoteById,
+    private val createNote: CreateNote,
+    private val updateNote: UpdateNote,
+    private val deleteNote: DeleteNote
+
 ) : ViewModel() {
 
     var state by mutableStateOf(NoteDetailState())
@@ -26,7 +33,7 @@ class NoteDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            when (val result = repository.getNoteById(noteId)) {
+            when (val result = getNoteById(noteId)) {
 
                 is AppResult.Success -> {
 
@@ -66,9 +73,9 @@ class NoteDetailViewModel @Inject constructor(
 
             val result =
                 if (state.isExistingNote) {
-                    repository.updateNote(note)
+                    updateNote(note)
                 } else {
-                    repository.createNote(note)
+                    createNote(state.title, state.description)
                 }
 
             if (result is AppResult.Success) {
@@ -79,13 +86,13 @@ class NoteDetailViewModel @Inject constructor(
 
     }
 
-    fun deleteNote() {
+    fun onDeleteNote() {
 
         currentNoteId?.let { id ->
 
             viewModelScope.launch {
 
-                repository.deleteNote(id)
+                deleteNote(id)
 
                 state = state.copy(isSaved = true)
 
@@ -96,9 +103,3 @@ class NoteDetailViewModel @Inject constructor(
     }
 
 }
-data class NoteDetailState(
-    val title: String = "",
-    val description: String = "",
-    val isExistingNote: Boolean = false,
-    val isSaved: Boolean = false
-)
