@@ -16,7 +16,3 @@ fun Long.toFormattedDateStringModern(pattern: String = "dd/MM/yyyy HH:mm:ss"): S
 
     return formatter.format(instant)
 }
-
-val timestamp: Long = System.currentTimeMillis()
-@RequiresApi(Build.VERSION_CODES.O)
-val formattedDate: String = timestamp.toFormattedDateStringModern()

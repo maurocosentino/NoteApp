@@ -2,6 +2,7 @@ package com.mauro.mynoteapp.notes
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -67,7 +68,7 @@ fun NoteDetailScreen(
 
                         IconButton(
                             onClick = {
-                                viewModel.deleteNote()
+                                viewModel.onDeleteNote()
                             }
                         ) {
 
@@ -109,7 +110,7 @@ fun NoteDetailScreen(
         ) {
 
             OutlinedTextField(
-
+                modifier = Modifier.fillMaxWidth(),
                 value = state.title,
 
                 onValueChange = {
@@ -123,7 +124,7 @@ fun NoteDetailScreen(
             )
 
             OutlinedTextField(
-
+                modifier = Modifier.fillMaxWidth(),
                 value = state.description,
 
                 onValueChange = {

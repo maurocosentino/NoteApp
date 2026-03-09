@@ -73,7 +73,7 @@ fun NotesScreen(
 
                 val data = (uiState as NotesUiState.Success).data
 
-                LazyColumn {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
 
                     items(data) { note ->
 
@@ -102,7 +102,6 @@ fun NotesScreen(
             }
         }
     }
-
 
     }
 }
