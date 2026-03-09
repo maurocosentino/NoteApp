@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mauro.mynoteapp.notes.NoteDetailScreen
+import com.mauro.mynoteapp.notes.NotesScreen
 import com.mauro.mynoteapp.theme.MyNoteAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

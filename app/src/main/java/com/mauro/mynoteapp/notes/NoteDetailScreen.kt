@@ -34,11 +34,10 @@ fun NoteDetailScreen(
     }
 
     LaunchedEffect(state.isSaved) {
-
+        println("isSaved cambió a: ${state.isSaved}")
         if (state.isSaved) {
             onBack()
         }
-
     }
 
     Scaffold(
