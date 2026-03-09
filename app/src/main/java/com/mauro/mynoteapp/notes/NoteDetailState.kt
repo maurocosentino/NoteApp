@@ -4,5 +4,6 @@ data class NoteDetailState(
     val title: String = "",
     val description: String = "",
     val isExistingNote: Boolean = false,
-    val isSaved: Boolean = false
+    val isSaved: Boolean = false,
+    val isDeleted: Boolean = false
 )

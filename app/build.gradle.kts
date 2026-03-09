@@ -41,29 +41,24 @@ android {
 }
 
 dependencies {
-
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
-
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-analytics")
 
     implementation(platform(libs.androidx.compose.bom))
-
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.activity.compose)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-compose")
-
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
     implementation(libs.hilt.android)
     implementation(libs.androidx.navigation.compose)
 
@@ -71,7 +66,6 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 
-    // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")

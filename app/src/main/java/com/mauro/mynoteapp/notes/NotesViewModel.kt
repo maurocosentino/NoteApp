@@ -3,6 +3,7 @@ package com.mauro.mynoteapp.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mauro.mynoteapp.domain.AppResult
+import com.mauro.mynoteapp.domain.usecase.CreateNote
 import com.mauro.mynoteapp.domain.usecase.GetAllNotes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor (
-    private val getAllNotes : GetAllNotes
+    private val getAllNotes : GetAllNotes,
+    private val createNote: CreateNote
 ): ViewModel(){
     private val _uiState = MutableStateFlow<NotesUiState>(NotesUiState.Loading)
     val uiState: StateFlow<NotesUiState> = _uiState.asStateFlow()
@@ -33,6 +35,11 @@ class NotesViewModel @Inject constructor (
                 is AppResult.Error -> _uiState.value = NotesUiState.Error(result.message)
                 }
             }
+        }
+    }
+    fun restoreNote(title: String, description: String) {
+        viewModelScope.launch {
+            createNote(title, description)
         }
     }
 

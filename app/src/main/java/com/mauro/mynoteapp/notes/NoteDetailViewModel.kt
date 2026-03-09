@@ -20,10 +20,10 @@ class NoteDetailViewModel @Inject constructor(
     private val getNoteById: GetNoteById,
     private val createNote: CreateNote,
     private val updateNote: UpdateNote,
-    private val deleteNote: DeleteNote
+    private val deleteNote: DeleteNote,
 
 ) : ViewModel() {
-
+    private var recentlyDeletedNote: Note? = null
     var state by mutableStateOf(NoteDetailState())
         private set
 
@@ -87,19 +87,26 @@ class NoteDetailViewModel @Inject constructor(
     }
 
     fun onDeleteNote() {
-
         currentNoteId?.let { id ->
-
             viewModelScope.launch {
-
+                recentlyDeletedNote = Note(
+                    id = id,
+                    title = state.title,
+                    description = state.description
+                )
                 deleteNote(id)
-
-                state = state.copy(isSaved = true)
-
+                state = state.copy(isDeleted = true)
             }
-
         }
+    }
 
+    fun restoreDeletedNote() {
+        recentlyDeletedNote?.let { note ->
+            viewModelScope.launch {
+                createNote(note.title, note.description)
+                recentlyDeletedNote = null
+            }
+        }
     }
 
 }

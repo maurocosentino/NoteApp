@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -49,33 +50,51 @@ fun AppNavigation() {
         startDestination = "notes"
     ) {
 
-        composable("notes") {
+        composable("notes") { backStackEntry ->
+            val noteDeleted = backStackEntry.savedStateHandle
+                .getStateFlow("noteDeleted", false)
+                .collectAsStateWithLifecycle()
+            val deletedTitle = backStackEntry.savedStateHandle
+                .getStateFlow("deletedTitle", "")
+                .collectAsStateWithLifecycle()
+            val deletedDescription = backStackEntry.savedStateHandle
+                .getStateFlow("deletedDescription", "")
+                .collectAsStateWithLifecycle()
 
             NotesScreen(
-                onNoteClick = { note ->
-                    navController.navigate("detail/${note.id}")
+                onNoteClick = { note -> navController.navigate("detail/${note.id}") },
+                onAddNote = { navController.navigate("detail") },
+                noteDeleted = noteDeleted.value,
+                onNoteDeletedConsumed = {
+                    backStackEntry.savedStateHandle["noteDeleted"] = false
                 },
-                onAddNote = {
-                    navController.navigate("detail")
-                }
+                onRestoreNote = {
+                    backStackEntry.savedStateHandle["noteDeleted"] = false
+                },
+                deletedTitle = deletedTitle.value,
+                deletedDescription = deletedDescription.value
             )
-
         }
 
         composable("detail") {
             NoteDetailScreen(
                 noteId = null,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNoteDeleted = { _, _ -> navController.popBackStack() }
             )
         }
 
         composable("detail/{noteId}") { backStackEntry ->
-
             val noteId = backStackEntry.arguments?.getString("noteId")
-
             NoteDetailScreen(
                 noteId = noteId,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNoteDeleted = { title, description ->
+                    navController.previousBackStackEntry?.savedStateHandle?.set("noteDeleted", true)
+                    navController.previousBackStackEntry?.savedStateHandle?.set("deletedTitle", title)
+                    navController.previousBackStackEntry?.savedStateHandle?.set("deletedDescription", description)
+                    navController.popBackStack()
+                }
             )
         }
     }

@@ -18,7 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun NoteDetailScreen(
     noteId: String?,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNoteDeleted: (title: String, description: String) -> Unit
 ) {
 
     val viewModel: NoteDetailViewModel = hiltViewModel()
@@ -33,11 +34,12 @@ fun NoteDetailScreen(
 
     }
 
+    LaunchedEffect(state.isDeleted) {
+        if (state.isDeleted) onNoteDeleted(state.title, state.description)
+    }
+
     LaunchedEffect(state.isSaved) {
-        println("isSaved cambió a: ${state.isSaved}")
-        if (state.isSaved) {
-            onBack()
-        }
+        if (state.isSaved) onBack()
     }
 
     Scaffold(
